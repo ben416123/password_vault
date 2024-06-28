@@ -5,6 +5,25 @@ window = Tk()
 
 window.title("Password Vault")
 
+def firstScreen():
+    window.geometry("250x100")
+
+    label = Label(window, text="Enter master password:")
+    label.config(anchor=CENTER)
+    label.pack()
+
+    txt = Entry(window, width=20, show="*")
+    txt.pack()
+    txt.focus()
+
+    label1 = Label(window, text="Re-enter password")
+    label1.pack()
+
+    txt1 = Entry(window, width=20)
+    txt1.pack()
+    txt.focus()
+
+
 
 def loginScreen():
     window.geometry("250x100")
@@ -17,8 +36,9 @@ def loginScreen():
         password = "Test"
 
         if password == txt.get():
-            print("Correct")
+            passwordVault()
         else:
+            txt.delete(0, 'end')
             label1.config(text="Wrong")
 
     txt = Entry(window, width=20, show="*")
@@ -31,6 +51,16 @@ def loginScreen():
     button = Button(window, text="Submit", command=checkPassword)
     button.pack(pady=10)
 
+
+def passwordVault():
+    for widget in window.winfo_children():
+        widget.destroy()
+
+    window.geometry("700x350")
+
+    label = Label(window, text="Password Vault")
+    label.config(anchor=CENTER)
+    label.pack()
 
 loginScreen()
 window.mainloop()
