@@ -20,12 +20,18 @@ def firstScreen():
     label1 = Label(window, text="Re-enter password")
     label1.pack()
 
-    txt1 = Entry(window, width=20)
+    txt1 = Entry(window, width=20, show="*")
     txt1.pack()
     txt.focus()
 
+    label2 = Label(window)
+    label2.pack()
+
     def savePassword():
-        print("test")
+        if txt.get() == txt1.get():
+            pass
+        else:
+            label2.config(text="Passwords do not match")
 
     button = Button(window, text="Save", command=savePassword)
     button.pack(pady=10)
