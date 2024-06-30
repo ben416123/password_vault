@@ -5,8 +5,9 @@ window = Tk()
 
 window.title("Password Vault")
 
+
 def firstScreen():
-    window.geometry("250x100")
+    window.geometry("250x150")
 
     label = Label(window, text="Enter master password:")
     label.config(anchor=CENTER)
@@ -23,6 +24,11 @@ def firstScreen():
     txt1.pack()
     txt.focus()
 
+    def savePassword():
+        print("test")
+
+    button = Button(window, text="Save", command=savePassword)
+    button.pack(pady=10)
 
 
 def loginScreen():
@@ -62,5 +68,6 @@ def passwordVault():
     label.config(anchor=CENTER)
     label.pack()
 
-loginScreen()
+
+firstScreen()
 window.mainloop()
