@@ -1,6 +1,15 @@
 import sqlite3, hashlib
 from tkinter import *
 
+with sqlite3.connect("password_vault.db") as db:
+    cursor = db.cursor()
+
+cursor.execute("""
+CREATE TABLE IF NOT EXISTS masterpassword(
+id INTEGER PRIMARY KEY,
+password TEXT NOT NULL);
+""")
+
 window = Tk()
 
 window.title("Password Vault")
@@ -29,7 +38,14 @@ def firstScreen():
 
     def savePassword():
         if txt.get() == txt1.get():
-            pass
+            hashedPassword = txt.get()
+
+            insert_password = """INSERT INTO masterpassword(password)
+            VALUES(?) """
+            cursor.execute(insert_password, [(hashedPassword)])
+            db.commit()
+
+            passwordVault()
         else:
             label2.config(text="Passwords do not match")
 
@@ -44,10 +60,15 @@ def loginScreen():
     label.config(anchor=CENTER)
     label.pack()
 
-    def checkPassword():
-        password = "Test"
+    def getMasterPassword():
+        checkHashedPassword = txt.get()
+        cursor.execute("SELECT * FROM masterpassword WHERE id = 1 AND password = ?", [(checkHashedPassword)])
+        return cursor.fetchall()
 
-        if password == txt.get():
+    def checkPassword():
+        match = getMasterPassword()
+
+        if match:
             passwordVault()
         else:
             txt.delete(0, 'end')
@@ -75,5 +96,10 @@ def passwordVault():
     label.pack()
 
 
-firstScreen()
+check = cursor.execute("SELECT * FROM masterpassword")
+if cursor.fetchall():
+    loginScreen()
+else:
+    firstScreen()
+
 window.mainloop()
