@@ -14,6 +14,12 @@ window = Tk()
 
 window.title("Password Vault")
 
+def hashPassword(input):
+    hash = hashlib.md5(input)
+    hash = hash.hexdigest()
+
+    return hash
+
 
 def firstScreen():
     window.geometry("250x150")
@@ -38,7 +44,7 @@ def firstScreen():
 
     def savePassword():
         if txt.get() == txt1.get():
-            hashedPassword = txt.get()
+            hashedPassword = hashPassword(txt.get().encode("utf-8"))
 
             insert_password = """INSERT INTO masterpassword(password)
             VALUES(?) """
@@ -61,7 +67,7 @@ def loginScreen():
     label.pack()
 
     def getMasterPassword():
-        checkHashedPassword = txt.get()
+        checkHashedPassword = hashPassword(txt.get().encode("utf-8"))
         cursor.execute("SELECT * FROM masterpassword WHERE id = 1 AND password = ?", [(checkHashedPassword)])
         return cursor.fetchall()
 
